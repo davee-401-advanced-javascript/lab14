@@ -10,7 +10,7 @@
 - [Lab 11 Pull Request](https://github.com/davee-401-advanced-javascript/auth-server/pull/1)
 - [Lab 12 Pull Request](https://github.com/davee-401-advanced-javascript/auth-server/pull/4)
 - [Lab 13 Pull Request](https://github.com/davee-401-advanced-javascript/auth-server/pull/2)
-- [Lab 14 Pull Request]()
+- [Lab 14 Pull Request](https://github.com/davee-401-advanced-javascript/lab14/pull/1)
 <!-- - [back-end server url](http://xyz.com) (when applicable)
 - [front-end application](http://xyz.com) (when applicable) -->
 
