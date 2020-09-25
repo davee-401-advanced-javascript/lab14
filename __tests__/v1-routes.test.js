@@ -14,9 +14,6 @@ function propertiesMatch(obj, resultObj) {
   return allMatch;
 }
 
-// Using a global testID to be reassigned and used
-let obj3Id;
-
 describe('Proof of Life test', () => {
   it('Proof of life', () => {
     expect(true).toBeTruthy();
@@ -24,6 +21,10 @@ describe('Proof of Life test', () => {
 });
 
 describe('Test V1 Routes', () => {
+
+  // Need this to be global to use in multiple test
+  let obj3Id;
+
   it('POST /api/v1/todo adds an item to the DB and returns an object with that item', async() => {
     let obj1 = {
       text: 'text1',
@@ -79,7 +80,6 @@ describe('Test V1 Routes', () => {
   it('DELETE /api/v1/todo/ID returns an empty object and Subsequent get should result in nothing found', async () => {
     let deleted = await myServer.delete(`/api/v1/todo/${obj3Id}`);
     let checkDeleted = await myServer.get(`/api/v1/todo/${obj3Id}`);
-    console.log('checkDeleted.body', checkDeleted.body);
     expect(deleted.body).toEqual({});
     expect(checkDeleted.body).toBeFalsy();
     expect(deleted.status).toEqual(200);
