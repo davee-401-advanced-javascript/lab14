@@ -38,7 +38,6 @@ router.post('/signup', async (req, res, next) => {
   } catch (e) {
     next(e.message);
   }
-
 });
 
 // adding ,basicAuth does?
