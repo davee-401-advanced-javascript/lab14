@@ -39,6 +39,7 @@ describe('Post to /signin should work', () => {
   it('Post to /signin should work with correct authorization', async() => {
     let response = await request.post('/signin').auth('davee','davee');
     expect(response.body.token).toBeDefined();
+    expect(response.status).toEqual(200);
   });
 });
 
