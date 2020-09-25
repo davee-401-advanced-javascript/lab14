@@ -1,12 +1,12 @@
 'use strict';
 
-const users = require('../models/users-model.js')
+const users = require('../models/users-model.js');
 
 module.exports = async (req, res, next) => {
 
   try {
 
-    if (!req.headers.authorization) { next('Invalid Login') }
+    if (!req.headers.authorization) { next('Invalid Login'); }
 
     const token = req.headers.authorization.split(' ').pop();
 
@@ -17,6 +17,6 @@ module.exports = async (req, res, next) => {
     next();
 
   } catch (e) {
-    next("Invalid Login");
+    next('Invalid Login');
   }
-}
+};
