@@ -6,7 +6,6 @@ const request = supergoose(server.app);
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
 describe('Proof of Life test', () => {
   it('Proof of life', () => {
     expect(true).toBeTruthy();
@@ -28,7 +27,7 @@ describe('Post to /signup should work', () => {
       role: 'admin',
     };
     let response = await request.post('/signup').send(obj);
-    const parsedToken = jwt.verify(response.body.token, process.env.SECRET);
+    // const parsedToken = jwt.verify(response.body.token, process.env.SECRET);
     expect(response.status).toEqual(200);
     expect(response.body.token).toBeDefined();
     expect(response.body.user.username).toEqual('davee');
@@ -43,30 +42,3 @@ describe('Post to /signin should work', () => {
   });
 });
 
-describe('Test V1 Routes', () => {
-  it('Post should add to database', async() => {
-    let obj = {
-      text: 'text1',
-      assignee: 'assignee1',
-      complete: false,
-      difficulty: 3,
-    };
-    let response = await request.post('/api/v1/todo').send(obj);
-    expect(response.status).toEqual(200);
-    expect(response.body._id).toBeDefined();
-  });
-
-  it('Get should return all', async() => {
-    let obj2 = {
-      text: 'text1',
-      assignee: 'assignee1',
-      complete: false,
-      difficulty: 3,
-    };
-    let added = await request.post('/api/v1/todo').send(obj2);
-    let response = await request.get('/api/v1/todo');
-    console.log('response.body', response.body);
-    expect(response.status).toEqual(200);
-    expect(response.body.count).toEqual(2);
-  });
-});
