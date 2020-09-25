@@ -90,7 +90,7 @@ function handlePut(request, response, next) {
 
 function handleDelete(request, response, next) {
   request.model.delete(request.params.id)
-    .then(result => response.status(200).json(result))
+    .then(result => response.status(200).json({}))
     .catch(next);
 }
 

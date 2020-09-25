@@ -99,7 +99,7 @@ async function handlePut(request, response, next) {
 async function handleDelete(request, response, next) {
   try {
     let result = await request.model.delete(request.params.id);
-    response.status(200).json(result);
+    response.status(200).json({});
   } catch(e) {
     next(e);
   }
