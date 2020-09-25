@@ -57,6 +57,7 @@ router.delete('/:model/:id', handleDelete);
 
 
 // Route Handlers
+
 function handleGetAll(request, response, next) {
   request.model.get(request.query)
     .then(data => {
