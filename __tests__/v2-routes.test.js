@@ -3,9 +3,9 @@
 const supergoose = require('@code-fellows/supergoose');
 const server = require('../server.js');
 const myServer = supergoose(server.app);
-// const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+// Helper Test Function
 function propertiesMatch(obj, resultObj) {
   let allMatch = true;
   Object.keys(obj).forEach(key=> {
@@ -21,16 +21,17 @@ describe('Proof of Life test', () => {
 });
 
 describe('Test V2 Routes', () => {
+
+  // Need these to be global to use in multiple test
+  let adminToken;
+  let obj3Id;
+
   let user1 = {
     username: 'dave1',
     password: 'dave1',
     role: 'admin', 
   };
 
-  // Need these to be global to use in multiple test
-  let adminToken;
-  let obj3Id;
-  
   it('POST /api/v2/todo with a bearer token that has create permissions adds an item to the DB and returns an object with the added item', async() => {
     let admin = await myServer.post('/signup').send(user1);
     adminToken = admin.body.token;

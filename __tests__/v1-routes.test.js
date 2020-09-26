@@ -21,7 +21,7 @@ describe('Proof of Life test', () => {
 });
 
 describe('Test V1 Routes', () => {
-
+  
   // Need this to be global to use in multiple test
   let obj3Id;
 
