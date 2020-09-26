@@ -3,8 +3,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const SECRET = process.env.SECRET || 'sauce';
+// require('dotenv').config();
+// const SECRET = process.env.SECRET;
 
 const users = mongoose.Schema({
   username: { type: String, required: true },
@@ -34,7 +34,7 @@ users.methods.generateToken = function () {
     role: this.role,
     permissions: roles[this.role],
   };
-  let token = jwt.sign(tokenObject, SECRET);
+  let token = jwt.sign(tokenObject, process.env.SECRET);
   return token;
 };
 
@@ -54,7 +54,7 @@ users.statics.validateBasic = async function (username, password) {
 
 users.statics.authenticateWithToken = async function (token) {
   try {
-    const parsedToken = jwt.verify(token, SECRET);
+    const parsedToken = jwt.verify(token, process.env.SECRET);
     const user = this.findOne({ username: parsedToken.username });
     return user;
   } catch (e) {

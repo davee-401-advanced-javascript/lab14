@@ -5,7 +5,7 @@ const server = require('../server.js');
 const myServer = supergoose(server.app);
 // require('dotenv').config();
 const jwt = require('jsonwebtoken');
-// process.env.SECRET = "secretForTest"
+process.env.SECRET = 'secretForTest';
 
 describe('Proof of Life test', () => {
   it('Proof of life', () => {
@@ -28,11 +28,12 @@ describe('POST /signup should work', () => {
       role: 'admin',
     };
     let response = await myServer.post('/signup').send(obj);
-    // const parsedToken = jwt.verify(response.body.token, process.env.SECRET);
+    const parsedToken = jwt.verify(response.body.token, process.env.SECRET);
     // console.log('parsedToken', parsedToken);
     // expect(parsedToken.username).toEqual('davee');
     // expect(parsedToken.role).toEqual('admin');
     // expect(parsedToken.permissions).toBeDefined();
+    expect(parsedToken).toBeTruthy();
     expect(response.status).toEqual(200);
     expect(response.body.token).toBeDefined();
     expect(response.body.user.username).toEqual('davee');
