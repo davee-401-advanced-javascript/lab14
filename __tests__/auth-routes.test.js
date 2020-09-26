@@ -28,6 +28,7 @@ describe('POST /signup should work', () => {
     };
     let response = await myServer.post('/signup').send(obj);
     const parsedToken = jwt.verify(response.body.token, process.env.SECRET);
+    console.log('parsedToken', parsedToken);
     expect(parsedToken.username).toEqual('davee');
     expect(parsedToken.role).toEqual('admin');
     expect(parsedToken.permissions).toBeDefined();
