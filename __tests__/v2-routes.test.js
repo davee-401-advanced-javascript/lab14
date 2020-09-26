@@ -3,7 +3,7 @@
 const supergoose = require('@code-fellows/supergoose');
 const server = require('../server.js');
 const myServer = supergoose(server.app);
-require('dotenv').config();
+// require('dotenv').config();
 
 // Helper Test Function
 function propertiesMatch(obj, resultObj) {
