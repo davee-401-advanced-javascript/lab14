@@ -9,6 +9,7 @@ let server = require('./server.js');
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
+  useFindAndModify: false,
 });
 
 // start the server
