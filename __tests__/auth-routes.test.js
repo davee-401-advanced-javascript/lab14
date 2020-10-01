@@ -3,9 +3,21 @@
 const supergoose = require('@code-fellows/supergoose');
 const server = require('../server.js');
 const myServer = supergoose(server.app);
-// require('dotenv').config();
 const jwt = require('jsonwebtoken');
 process.env.SECRET = 'secretForTest';
+// const userModel = require('../auth/models/users-model.js);
+
+
+// beforeAll
+// beforeEach
+afterEach(async() => {
+  console.log('testing after each');
+  // await userModel.remove({});
+  // run commond from mongoose to delte dataabse
+  // maybe use the bring in user model to remove
+});
+
+
 
 describe('Proof of Life test', () => {
   it('Proof of life', () => {
@@ -29,10 +41,6 @@ describe('POST /signup should work', () => {
     };
     let response = await myServer.post('/signup').send(obj);
     const parsedToken = jwt.verify(response.body.token, process.env.SECRET);
-    // console.log('parsedToken', parsedToken);
-    // expect(parsedToken.username).toEqual('davee');
-    // expect(parsedToken.role).toEqual('admin');
-    // expect(parsedToken.permissions).toBeDefined();
     expect(parsedToken).toBeTruthy();
     expect(response.status).toEqual(200);
     expect(response.body.token).toBeDefined();
