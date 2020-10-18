@@ -1,17 +1,8 @@
 'use strict';
 
-/**
- * API Router Module (V1)
- * Integrates with various models through a common Interface (.get(), .post(), .put(), .delete())
- * @module src/api/v1
- */
-
 const cwd = process.cwd();
-
 const express = require('express');
-
 const modelFinder = require(`${cwd}/middleware/model-finder.js`);
-
 const router = express.Router();
 
 // Evaluate the model, dynamically
@@ -30,33 +21,12 @@ router.get('/:model/schema', (request, response) => {
 });
 
 
-// API Routes
-/**
- * Get a list of records for a given model
- * Model must be a proper model, located within the ../models folder
- * @route GET /{model}
- * @param {model} model.path - Model Name
- * @security basicAuth
- * @returns {object} 200 { count: 2, results: [ {}, {} ] }
- * @returns {Error}  500 - Server error
- */
 router.get('/:model', handleGetAll);
-
-/**
- * @route POST /:model
- * Model must be a proper model, located within the ../models folder
- * @param {model} model.path.required
- * @returns {object} 200 - Count of results with an array of results
- * @returns {Error}  500 - Unexpected error
- */
 router.post('/:model', handlePost);
 router.get('/:model/:id', handleGetOne);
 router.put('/:model/:id', handlePut);
 router.delete('/:model/:id', handleDelete);
 
-
-
-// Route Handlers
 
 function handleGetAll(request, response, next) {
   request.model.get(request.query)
