@@ -1,14 +1,12 @@
 'use strict';
 
 const express = require('express');
+const router = express.Router();
 
 const basicAuth = require('../middleware/basic.js');
 const bearer = require('../middleware/bearer.js');
 const can = require('../middleware/acl.js');
 const users = require('../models/users-model.js');
-
-// Initialize Express Router
-const router = express.Router();
 
 router.post('/signup', async (req, res, next) => {
 
@@ -19,28 +17,24 @@ router.post('/signup', async (req, res, next) => {
       role: req.body.role,
     };
 
-    // Create a new instance from the schema, using that object
     let record = new users(obj);
-
-    // Save that instance to the database
     let newUser = await record.save();
-
     let token = record.generateToken();
 
     res.set('auth', token);
+
     let object = {
       token: token,
       user: newUser,
     };
     res.status(200).json(object);
 
-
   } catch (e) {
     next(e.message);
   }
 });
 
-// adding ,basicAuth does?
+
 router.post('/signin', basicAuth, (req, res, next) => {
   res.set('auth', req.token);
   let object = {
