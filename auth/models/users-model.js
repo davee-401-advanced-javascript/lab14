@@ -25,7 +25,7 @@ users.methods.can = function (capability) {
   return roles[this.role].includes(capability);
 };
 
-// Works with an instance, ie. userRecord.generateToken()
+
 users.methods.generateToken = function () {
   let tokenObject = {
     username: this.username,
@@ -36,13 +36,10 @@ users.methods.generateToken = function () {
   return token;
 };
 
-// Works without an instace, ie. users.validateBasic()
+
 users.statics.validateBasic = async function (username, password) {
 
-  // Look up the user by the username
   let user = await this.findOne({ username: username });
-
-  // Compare of the password sent against the password in the db
   let isValid = await bcrypt.compare(password, user.password);
 
   if (isValid) { return user; }
