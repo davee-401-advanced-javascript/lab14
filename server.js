@@ -11,20 +11,15 @@ const v2Routes = require('./api/v2.js');
 
 const app = express();
 
-// global middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Route Definitions
 app.use(authRoutes);
 app.use('/api/v1/', v1Routes);
 app.use('/api/v2/', v2Routes);
 
-// 404 / not found handler
 app.use('*', notFoundHandler);
-
-// Error Handler - last express route!
 app.use(errorHandler);
 
 module.exports = {
