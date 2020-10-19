@@ -40,7 +40,6 @@ users.methods.generateToken = function () {
 
 
 users.statics.validateBasic = async function (username, password) {
-
   let user = await this.findOne({ username: username });
   let isValid = await bcrypt.compare(password, user.password);
 
@@ -49,13 +48,9 @@ users.statics.validateBasic = async function (username, password) {
 };
 
 users.statics.authenticateWithToken = function (token) {
-  // try {
   const parsedToken = jwt.verify(token, process.env.SECRET);
-  return this.findOne({ username: parsedToken.username });
-  // return user;
-  // } catch (e) {
-  //   throw new Error(e.message);
-  // }
+  let user = this.findOne({ username: parsedToken.username });
+  return user;
 };
 
 module.exports = mongoose.model('users', users);
