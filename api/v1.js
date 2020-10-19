@@ -2,10 +2,9 @@
 
 const cwd = process.cwd();
 const express = require('express');
-const modelFinder = require(`${cwd}/middleware/model-finder.js`);
 const router = express.Router();
+const modelFinder = require(`${cwd}/middleware/model-finder.js`);
 
-// Evaluate the model, dynamically
 router.param('model', modelFinder.load);
 
 // Models List

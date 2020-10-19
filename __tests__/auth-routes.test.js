@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 process.env.SECRET = 'secretForTest';
 // const userModel = require('../auth/models/users-model.js);
 
-
 // beforeAll
 // beforeEach
 afterEach(async() => {
@@ -17,18 +16,9 @@ afterEach(async() => {
   // maybe use the bring in user model to remove
 });
 
-
-
 describe('Proof of Life test', () => {
   it('Proof of life', () => {
     expect(true).toBeTruthy();
-  });
-});
-
-describe('It should log a 404 for a route thats not present', ()=> {
-  it('Should give a 404 for bad route', async() => {
-    let response = await myServer.get('/bad');
-    expect(response.status).toEqual(404);
   });
 });
 
