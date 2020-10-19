@@ -21,8 +21,15 @@
 - Add the following into an .env file:
 
 ```
-PORT = 3000
-MONGODB_URI=mongodb://localhost:27017/auth-server
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/authenticated-api-server
+SECRET= pick a secret word
+CLIENT_ID= get this from github
+CLIENT_SECRET= get this from github
+STATE= pick anything you want
+TOKEN_SERVER=https://github.com/login/oauth/access_token
+REDIRECT_URI=http://localhost:3000/oauth
+REMOTE_API=https://api.github.com/user
 ```
 
 #### How to initialize/run your application (where applicable)
