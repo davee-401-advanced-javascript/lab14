@@ -66,7 +66,7 @@ async function getAllUsers(req, res, next) {
 }
 
 function handleSecretRoute(req, res, next) {
-  res.status(200).send(`Welcome, ${req.user.username}`);
+  res.status(200).send(`Welcome, ${req.user.username}, your token is valid`);
 }
 
 function userCanRead(req, res, next) {
