@@ -23,11 +23,11 @@ router.post('/signup', async (req, res, next) => {
 
     res.set('auth', token);
 
-    let object = {
+    let output = {
       token: token,
       user: newUser,
     };
-    res.status(200).json(object);
+    res.status(200).json(output);
 
   } catch (e) {
     next(e.message);
