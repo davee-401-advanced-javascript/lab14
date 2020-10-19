@@ -3,17 +3,20 @@
 const express = require('express');
 const router = express.Router();
 
+const userModel = require('../models/users-model.js');
 const basicAuth = require('../middleware/basic.js');
 const bearerAuth = require('../middleware/bearer.js');
+const oAuth = require('../middleware/oauth.js');
 const can = require('../middleware/acl.js');
-const userModel = require('../models/users-model.js');
 
 router.post('/signup', handleSignUp);
 router.post('/signin', basicAuth, handleSignIn);
+router.get('/allUsers', bearerAuth, getAllUsers);
 router.get('/secret', bearerAuth, handleSecretRoute);
-router.get('/article', bearerAuth, can('read'), userCanRead);
-router.get('/article', bearerAuth, can('create'), userCanCreate);
 router.get('/article', bearerAuth, can('update'), userCanUpdate);
+router.get('/article', bearerAuth, can('create'), userCanCreate);
+router.get('/article', bearerAuth, can('read'), userCanRead);
+router.get('/oauth', oAuth, handleOAuthRoute);
 
 
 async function handleSignUp(req, res, next) {
@@ -52,6 +55,16 @@ async function handleSignIn(req, res, next) {
   }
 }
 
+async function getAllUsers(req, res, next) {
+  try {
+    let allUsers = await userModel.find({});
+    res.set('auth', req.token);
+    res.status(200).json(allUsers);
+  } catch(e) {
+    next(e);
+  }
+}
+
 function handleSecretRoute(req, res, next) {
   res.status(200).send(`Welcome, ${req.user.username}`);
 }
@@ -66,6 +79,14 @@ function userCanCreate(req, res, next) {
 
 function userCanUpdate(req, res, next) {
   res.status(200).send('You can update it');
+}
+
+async function handleOAuthRoute(req, res, next) {
+  let output = {
+    token: req.token,
+    user: req.user,
+  };
+  res.status(200).json(output);
 }
 
 
