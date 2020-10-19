@@ -4,9 +4,9 @@ const express = require('express');
 const router = express.Router();
 
 const basicAuth = require('../middleware/basic.js');
-const bearer = require('../middleware/bearer.js');
+const bearerAuth = require('../middleware/bearer.js');
 const can = require('../middleware/acl.js');
-const users = require('../models/users-model.js');
+const userModel = require('../models/users-model.js');
 
 router.post('/signup', async (req, res, next) => {
 
@@ -17,18 +17,16 @@ router.post('/signup', async (req, res, next) => {
       role: req.body.role,
     };
 
-    let record = new users(obj);
+    let record = new userModel(obj);
     let newUser = await record.save();
     let token = record.generateToken();
-
-    res.set('auth', token);
 
     let output = {
       token: token,
       user: newUser,
     };
+    res.set('auth', token);
     res.status(200).json(output);
-
   } catch (e) {
     next(e.message);
   }
@@ -36,27 +34,31 @@ router.post('/signup', async (req, res, next) => {
 
 
 router.post('/signin', basicAuth, (req, res, next) => {
-  res.set('auth', req.token);
-  let object = {
-    token: req.token,
-    user: req.user,
-  };
-  res.status(200).json(object);
+  try {
+    let object = {
+      token: req.token,
+      user: req.user,
+    };
+    res.set('auth', req.token);
+    res.status(200).json(object);
+  } catch(e) {
+    next(e.message);
+  }
 });
 
-router.get('/secret', bearer, (req, res) => {
+router.get('/secret', bearerAuth, (req, res) => {
   res.status(200).send(`Welcome, ${req.user.username}`);
 });
 
-router.get('/article', bearer, can('read'), (req, res) => {
+router.get('/article', bearerAuth, can('read'), (req, res) => {
   res.status(200).send('You can read it');
 });
 
-router.post('/article', bearer, can('create'), (req, res) => {
+router.post('/article', bearerAuth, can('create'), (req, res) => {
   res.status(200).send('You can create it');
 });
 
-router.put('/article', bearer, can('update'), (req, res) => {
+router.put('/article', bearerAuth, can('update'), (req, res) => {
   res.status(200).send('You can update it');
 });
 

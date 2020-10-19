@@ -10,6 +10,10 @@ const users = mongoose.Schema({
   role: { type: String, required: true, default: 'guest', enum: ['guest', 'author', 'editor', 'admin'] },
 });
 
+users.pre('save', async function () {
+  this.password = await bcrypt.hash(this.password, 5);
+});
+
 const roles = {
   guest: ['read'],
   author: ['read', 'create'],
@@ -17,14 +21,9 @@ const roles = {
   admin: ['read', 'create', 'update', 'delete '],
 };
 
-users.pre('save', async function () {
-  this.password = await bcrypt.hash(this.password, 5);
-});
-
 users.methods.can = function (capability) {
   return roles[this.role].includes(capability);
 };
-
 
 users.methods.generateToken = function () {
   let tokenObject = {
@@ -32,7 +31,10 @@ users.methods.generateToken = function () {
     role: this.role,
     permissions: roles[this.role],
   };
-  let token = jwt.sign(tokenObject, process.env.SECRET);
+  let options = {
+    expiresIn: 300,
+  };
+  let token = jwt.sign(tokenObject, process.env.SECRET, options);
   return token;
 };
 
@@ -44,17 +46,16 @@ users.statics.validateBasic = async function (username, password) {
 
   if (isValid) { return user; }
   else { return undefined; }
-
 };
 
-users.statics.authenticateWithToken = async function (token) {
-  try {
-    const parsedToken = jwt.verify(token, process.env.SECRET);
-    const user = this.findOne({ username: parsedToken.username });
-    return user;
-  } catch (e) {
-    throw new Error(e.message);
-  }
+users.statics.authenticateWithToken = function (token) {
+  // try {
+  const parsedToken = jwt.verify(token, process.env.SECRET);
+  return this.findOne({ username: parsedToken.username });
+  // return user;
+  // } catch (e) {
+  //   throw new Error(e.message);
+  // }
 };
 
 module.exports = mongoose.model('users', users);
